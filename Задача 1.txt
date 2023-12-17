@@ -1,0 +1,21 @@
+#!/bin/bash
+
+config_name="$HOME/.clcn_config"
+last_boot=$(who -b | awk '{print $3,$4}')
+
+if [ ! -f $config_name ]; then
+   echo -e "1\n1\n$last_boot" > $config_name
+   echo "Вызовов этой команды с момента ее установки: 1"
+   echo "Вызовов этой команды с момента включения компьютера: 1"
+else
+  if [ "$last_boot" == "$(tail -n 1 $config_name)" ]; then
+    let call_after_boot=$(sed -n 2p $config_name)+1
+  else
+    call_after_boot=1
+  fi
+    let call_count_over=$(head -n 1 $config_name)+1
+    rm $config_name
+    echo -e "$call_count_over\n$call_after_boot\n$last_boot" > $config_name
+    echo "Вызовов этой команды с момента ее установки: $call_count_over"
+    echo "Вызовов этой команды с момента включения компьютера: $call_after_boot"
+fi

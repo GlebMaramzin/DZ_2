@@ -1,0 +1,8 @@
+#!/bin/bash
+
+huge_filename=huge.txt
+
+for var in $(cat $huge_filename)
+do
+ echo $var >> new_huge.txt
+done

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+huge_filename=huge.txt
+size=104857600
+touch $huge_filename
+
+while [ $(ls -l $huge_filename | awk '{print $5}') -lt $size ]
+do
+ echo "A" >> huge.txt
+done

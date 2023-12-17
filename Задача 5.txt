@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+archive=$1
+word=$2
+
+mkdir untar
+tar -C "untar" -xvf $archive
+
+for file in untar/*
+do
+ amount_word=$(wc -w $file | awk '{print $1}')
+ file_size=$(ls -l $file | awk '{print $5}')
+ let symbols_amount=$file_size-1
+ word_freq=$(grep -o -w "$word" $file | wc -l)
+ echo "Файл $file содержит: "
+ echo "   - $amount_word слов;"
+ echo "   - $symbols_amount символов;"
+ echo "   - $word_freq вхождений слова $word."
+done

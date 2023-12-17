@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+for param in "$@"
+do
+ start_time=$(date +%s)
+ "./$param"
+ end_time=$(date +%s)
+ let diff_time=$end_time-$start_time
+ echo "Время выполнения скрипта $param: $diff_time секунд(ы)"
+done

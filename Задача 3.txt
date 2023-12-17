@@ -1,0 +1,29 @@
+#!/bin/bash
+
+seconds=$1
+pid_number=$2
+filepath=$3
+total_memory=0
+flag=false
+
+for ((i=1; i <= $seconds; i++))
+do
+ if [ -d /proc/$pid_number ]; then
+   pmap -x $pid_number >> .tmp_file
+   curr_mem=$(tail -n 1 .tmp_file | awk '{print $4}')
+   rm .tmp_file
+   let total_memory=$total_memory+$curr_mem
+   echo "Кол-во занимаемой ОЗУ в $i секунду: $curr_mem" >> $filepath
+   sleep 1
+  else
+   flag=true
+   break
+ fi
+done
+
+if [ $flag = false ]; then
+ let total_memory=$total_memory/$seconds
+ echo -e  "Среднее значение занимаемой процессом $pid_number  ОЗУ за $seconds секунд(ы):\n $total_memory" >> result.txt
+else
+ echo "Процесс $pid_number не существует или был завершен досрочно"
+fi
